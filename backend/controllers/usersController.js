@@ -35,14 +35,15 @@ export async function logIn(req, res) {
     try {
         const user = await userModel.findOne({ email })
         if (!user) {
-            return res.send('Invalid email')
+            return res.send({message: 'Invalid email'})
         }
         const isCorrect = await bcrypt.compare(password, user.password)
         if (!isCorrect) {
-            return res.send('Invalid email or password')
+            return res.send({message: 'Invalid email or password'})
         }
 
         const payload = {
+            isLoggedIn: true,
             name: user.name,
             email: user.email,
         }
@@ -69,9 +70,7 @@ export const verifyJWT = (req, res, next) => {
 
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) return res.json({isLoggedIn: false, message: "Failed to authenticate"})
-        req.user = {}
-        req.user.name = decoded.name
-        req.user.email = decoded.email
+
         next()
     })
     

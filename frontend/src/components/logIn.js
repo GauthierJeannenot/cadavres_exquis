@@ -20,33 +20,25 @@ const LogIn = () => {
                 <label htmlFor="email">Email</label>
                 <input
                     {...register('email', {
-                        required: true, pattern:
-                        {
-                            value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                            message: "Invalid email format"
-                        }
+                        required: true
                     })}
 
                     type="text"
                     id="email"
                     placeholder="email"
                 />
-                {errors?.email && <p>{errors.email.message}</p>}
+                {errors?.email && <p>Invalid Email</p>}
                 <label htmlFor="password">Password</label>
                 <input
                     {...register('password', { 
-                        required: true, pattern: 
-                        {
-                            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/, 
-                            message: "Must be at least 12 characters long, and a combination of uppercase letters, lowercase letters, numbers, and symbols" 
-                        } 
+                        required: true, 
                     })}
 
                     type="text"
                     id="password"
                     placeholder="password" 
                 />
-                {errors?.password && <p>{errors.password.message}</p>}
+                {errors?.password && <p>Invalid Password</p>}
 
                 <input type="submit" />
             </form>
