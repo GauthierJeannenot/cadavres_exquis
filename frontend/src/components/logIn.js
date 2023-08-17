@@ -34,7 +34,7 @@ const LogIn = () => {
                         required: true, 
                     })}
 
-                    type="text"
+                    type="password"
                     id="password"
                     placeholder="password" 
                 />

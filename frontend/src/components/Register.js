@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { postUser } from '../utils/userApi';
 
 
-const SignInForm = () => {
+const Register = () => {
     const {
         register,
         handleSubmit,
@@ -26,7 +26,7 @@ const SignInForm = () => {
             <label htmlFor='password'>Password</label>
             <input
                 {...register("password", { required: true })}
-                type='text'
+                type='password'
                 placeholder='Password ...'
                 id='Password' />
 
@@ -42,4 +42,4 @@ const SignInForm = () => {
         </form>
     )
 }
-export default SignInForm
+export default Register
