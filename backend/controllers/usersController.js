@@ -43,7 +43,6 @@ export async function logIn(req, res) {
         }
 
         const payload = {
-            isLoggedIn: true,
             name: user.name,
             email: user.email,
         }

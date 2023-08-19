@@ -1,7 +1,11 @@
+import NavBar from "./NavBar"
+
+
 function Home() {
-    return(
+    return (
         <>
-        <h1>Hello, world !</h1>
+            <NavBar />
+            <h1>Hello, world !</h1>
         </>
     )
 }

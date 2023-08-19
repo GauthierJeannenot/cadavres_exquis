@@ -1,21 +1,32 @@
 import { useForm } from "react-hook-form";
-import { logInUser } from "../utils/userApi";
+import { useNavigate } from "react-router-dom";
+import { logInUser, isUserAuth } from "../utils/userApi";
+import { useEffect } from "react";
+import NavBar from "./NavBar";
 
 
 
 const LogIn = () => {
+    const navigate = useNavigate()
+
     const {
         register,
-        handleSubmit,
-        formState: {errors}
+        handleSubmit
     } = useForm()
 
     const onSubmit = async (data) => {
         await logInUser(data)
+        isUserAuth().then(data => data.isUserAuth ? navigate('/') : null)
     }
+
+    useEffect(() => {
+        isUserAuth().then(data => data.isUserAuth ? navigate('/') : null)
+
+    }, [navigate])
 
     return (
         <>
+            <NavBar />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor="email">Email</label>
                 <input
@@ -27,18 +38,18 @@ const LogIn = () => {
                     id="email"
                     placeholder="email"
                 />
-                {errors?.email && <p>Invalid Email</p>}
+
                 <label htmlFor="password">Password</label>
                 <input
-                    {...register('password', { 
-                        required: true, 
+                    {...register('password', {
+                        required: true,
                     })}
 
                     type="password"
                     id="password"
-                    placeholder="password" 
+                    placeholder="password"
                 />
-                {errors?.password && <p>Invalid Password</p>}
+
 
                 <input type="submit" />
             </form>
