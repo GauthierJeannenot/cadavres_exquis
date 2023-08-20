@@ -1,10 +1,17 @@
+import { useEffect, useState } from "react"
 import NavBar from "./NavBar"
+import { isUserAuth } from "../utils/userApi"
 
 function Profile() {
+    const [userName, setUserName] = useState('')
+    useEffect(() => {
+        isUserAuth().then(data => setUserName(data.userName))
+    })
+
     return(
         <>
         <NavBar />
-        <h1>Profile</h1>
+        <h1>{userName}</h1>
         </>
     )
 }

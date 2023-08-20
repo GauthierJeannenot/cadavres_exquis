@@ -5,9 +5,14 @@ import { isUserAuth, logOutUser } from "../utils/userApi";
 function NavBar() {
     const navigate = useNavigate()
     const [loggedIn, setLoggedIn] = useState(null)
+    const [userId, setUserId] = useState("")
 
     useEffect(() => {
-        isUserAuth().then(data => data.isUserAuth ? setLoggedIn(true) : setLoggedIn(null))
+        isUserAuth()
+            .then(data => {
+                data.isUserAuth ? setLoggedIn(true) : setLoggedIn(null)
+                setUserId(data.userId)
+            })
     }, [])
 
     const logOut = () => {
@@ -22,14 +27,17 @@ function NavBar() {
                     <li>
                         <Link to="/">Home</Link>
                     </li>
-                    <li>
-                        <Link to="/profile">Profile</Link>
-                    </li>
+
 
                     {loggedIn
-                        ? <li>
-                            <div onClick={logOut}>Logout</div>
-                        </li>
+                        ? <div>
+                            <li>
+                                <div onClick={logOut}>Logout</div>
+                            </li>
+                            <li>
+                                <Link to={`/profile/${userId}`}>Profile</Link>
+                            </li>
+                        </div>
                         : <div>
                             <li>
                                 <Link to="/login">Login</Link>
@@ -37,6 +45,7 @@ function NavBar() {
                             <li>
                                 <Link to="/register">Register</Link>
                             </li>
+
                         </div>
 
                     }

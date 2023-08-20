@@ -5,7 +5,8 @@ const router = express.Router();
 router.post('/register', usersController.createUser)
 router.post('/login', usersController.logIn)
 router.get('/isUserAuth', usersController.verifyJWT, (req, res) => {
-    res.json({isUserAuth: true})
+    res.json({isUserAuth: true, userName: req.user.name, userId: req.user.id})
 })
+router.post('/addFriend', usersController.addFriend)
 
 export default router

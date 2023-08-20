@@ -16,6 +16,7 @@ const LogIn = () => {
 
     const onSubmit = async (data) => {
         await logInUser(data)
+        
         isUserAuth().then(data => data.isUserAuth ? navigate('/') : null)
     }
 
