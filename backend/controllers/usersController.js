@@ -3,6 +3,11 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import 'dotenv/config';
 
+const getUserId = (req, res) => {
+
+
+}
+
 export async function createUser(req, res) {
     const { name, password, email } = req.body
 
@@ -86,21 +91,59 @@ export const verifyJWT = (req, res, next) => {
 }
 
 export async function addFriend(req, res) {
-    const token = req.headers['x-access-token']
-    if (!token) return res.json({ message: "You are not logged in" })
+    try {
+        const token = req.headers['x-access-token']
+        if (!token) return res.json({ message: "You are not logged in" })
 
-    const userId = jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) return res.json({ message: "Wrong token" })
-        const userId = decoded.id
-        return userId
-    })
+        const userId = jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            if (err) return res.json({ message: "Wrong token" })
+            const userId = decoded.id
+            return userId
+        })
 
-    const { targetName } = req.body
-    const target = await userModel.findOne({name: targetName})
-    const targetId = target._id
+        const { targetName } = req.body
+        const target = await userModel.findOne({ name: targetName })
+        const targetId = target._id
 
-    const updatedUser = await userModel.findByIdAndUpdate(userId, { $push: { friends: targetId } });
+        const updatedUser = await userModel.findByIdAndUpdate(userId, { $push: { friends: targetId } }, { returnDocument: 'after' });
 
-    res.send({updatedUser: updatedUser})
+        res.send({ updatedUser })
+
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export async function deleteFriend(req, res) {
+
+    try {
+        const token = req.headers['x-access-token']
+        if (!token) return res.json({ message: "You are not logged in" })
+
+        const userId = jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            if (err) return res.json({ message: "Wrong token" })
+            const userId = decoded.id
+            return userId
+        })
+
+
+        const { targetName } = req.body
+        const target = await userModel.findOne({ name: targetName })
+        const targetId = target._id
+
+
+        const updatedUser = await userModel.findByIdAndUpdate(
+            userId,
+            {
+                $pull: { friends: targetId }
+            },
+            { returnDocument: 'after' }
+        );
+        res.send(updatedUser)
+
+
+    } catch (error) {
+        console.error(error)
+    }
 
 }

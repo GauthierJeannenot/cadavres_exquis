@@ -12,6 +12,7 @@ function Profile() {
         <>
         <NavBar />
         <h1>{userName}</h1>
+        <form></form>
         </>
     )
 }
