@@ -3,11 +3,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import 'dotenv/config';
 
-const getUserId = (req, res) => {
-
-
-}
-
 export async function createUser(req, res) {
     const { name, password, email } = req.body
 
@@ -67,6 +62,7 @@ export async function logIn(req, res) {
                     token
                 })
             })
+
     } catch (error) {
         console.error(error)
     }
@@ -86,6 +82,28 @@ export const verifyJWT = (req, res, next) => {
 
         next()
     })
+
+
+}
+
+export async function showFriends(req, res){
+    const token = req.headers['x-access-token']
+    if (!token) return res.json({ message: "You are not logged in" })
+
+    const userId = jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) return res.json({ message: "Wrong token" })
+        const userId = decoded.id
+        return userId
+    })
+
+    try {
+        const user = await userModel.findById(userId)
+        const friendIds = user.friends
+        const friendsData = await userModel.find({ _id: { $in: friendIds } })
+        res.send(friendsData)
+    } catch (error) {
+        console.error(error)
+    }
 
 
 }
@@ -115,7 +133,6 @@ export async function addFriend(req, res) {
 }
 
 export async function deleteFriend(req, res) {
-
     try {
         const token = req.headers['x-access-token']
         if (!token) return res.json({ message: "You are not logged in" })
@@ -145,5 +162,4 @@ export async function deleteFriend(req, res) {
     } catch (error) {
         console.error(error)
     }
-
 }

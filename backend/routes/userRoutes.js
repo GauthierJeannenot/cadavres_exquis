@@ -9,5 +9,6 @@ router.get('/isUserAuth', usersController.verifyJWT, (req, res) => {
 })
 router.post('/addFriend', usersController.addFriend)
 router.post('/deleteFriend', usersController.deleteFriend)
+router.get('/showFriends', usersController.showFriends)
 
 export default router

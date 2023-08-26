@@ -57,3 +57,38 @@ export const isUserAuth = async () =>{
     }
     
 }
+
+export const loadFriendsList = async() => {
+    try {
+        const response = await fetch('/api/users/showFriends', {
+            headers: {
+                "x-access-token": localStorage.getItem("token")
+            }
+        })
+        const friendsList = await response.json()
+        return friendsList
+        
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export async function deleteFriend(data) {
+    try {
+        const response = await fetch('/api/users/deleteFriend', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "x-access-token": localStorage.getItem("token")
+            },
+            body: JSON.stringify({targetName: data})
+        })
+        const jsonResponse = await response.json()
+        return jsonResponse
+        
+    } catch (error) {
+        console.error(error)
+    }
+
+
+}
